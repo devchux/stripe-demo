@@ -1,0 +1,62 @@
+html {
+  font-size: calc(100vw * 10 / 1920);
+
+  body {
+    main {
+      max-width: 124rem;
+      padding: 3rem;
+      margin: auto;
+      height: 80vh;
+
+      > .button-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        gap: 2rem;
+
+        > button {
+          cursor: pointer;
+          background-color: hsl(233.747, 100%, 64%);
+          border: 0.1rem solid #000000;
+          border-radius: 0.5rem;
+          color: #ffffff;
+          transform: scale(1.2);
+        }
+      }
+
+      > .box-wrapper {
+        overflow: hidden;
+        margin-top: 5vh;
+        height: 100%;
+
+        > .box-inner-wrapper {
+          display: flex;
+          gap: 3rem;
+          height: 100%;
+          width: 148%;
+
+          > .box {
+            border-radius: 2rem;
+            background-color: hsl(233.747, 100%, 64%);
+            height: 99%;
+            border: 0.1rem solid #000000;
+            cursor: pointer;
+            width: 15%;
+            transition: all 0.2s linear;
+
+            &.active {
+              width: 100%;
+            }
+
+            &.hover {
+              width: 19.5%;
+            }
+
+            &.active-hover {
+              width: 95.5%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
