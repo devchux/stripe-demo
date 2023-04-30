@@ -9,8 +9,12 @@ export class Home extends Component {
         boxInnerWrapper: "main > .box-wrapper > .box-inner-wrapper",
         boxes: "main > .box-wrapper > .box-inner-wrapper > .box",
         activeBox: "main > .box-wrapper > .box-inner-wrapper > .box.active",
+        boxesInView: "main > .box-wrapper > .box-inner-wrapper > .box.in-view",
       },
     });
+
+    this.rightMoves = 0;
+    this.distanceMoved = 7;
   }
 
   onLoad() {
@@ -22,7 +26,11 @@ export class Home extends Component {
   onBoxMouseOver() {
     forEach(this.elements.boxes, (box) => {
       box.addEventListener("mouseover", () => {
-        if (box.classList.contains("active")) return;
+        if (
+          box.classList.contains("active") ||
+          !box.classList.contains("in-view")
+        )
+          return;
 
         this.elements.activeBox.classList.add("active-hover");
         box.classList.add("hover");
@@ -61,6 +69,28 @@ export class Home extends Component {
         });
 
         box.classList.add("active");
+
+        if (
+          this.elements.boxesInView[
+            this.elements.boxesInView.length - 1
+          ].getAttribute("data-box") === box.getAttribute("data-box") &&
+          box.getAttribute("data-box") !==
+            this.elements.boxes[this.elements.boxes.length - 1].getAttribute(
+              "data-box"
+            )
+        ) {
+          this.rightMoves++;
+          const translateX =
+            this.rightMoves * this.distanceMoved -
+            (this.rightMoves === this.elements.boxes.length / 2 ? 2.5 : 0);
+          console.log(translateX);
+          this.elements.boxInnerWrapper.style.transform = `translateX(-${translateX}%)`;
+          this.elements.boxesInView[0].classList.remove("in-view");
+          this.elements.boxes[
+            Number(box.getAttribute("data-box")) + 1
+          ].classList.add("in-view");
+        }
+
         super.create();
       });
     });
