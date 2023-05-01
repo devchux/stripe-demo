@@ -18,6 +18,7 @@ export class Home extends Component {
     this.onBoxMouseOver();
     this.onBoxMouseOut();
     this.onSelectBox();
+    this.autoSelectBox();
     this.onNavButtonClick();
   }
 
@@ -55,6 +56,7 @@ export class Home extends Component {
     forEach(this.elements.boxes, (box) => {
       box.addEventListener("click", () => {
         this.handleBoxSelection(box);
+        this.cancelAutoSelectBox();
       });
     });
   }
@@ -62,33 +64,15 @@ export class Home extends Component {
   onNavButtonClick() {
     forEach(this.elements.navButton, (button) => {
       button.addEventListener("click", () => {
-        let box = null;
         if (button.className === "left") {
-          box = this.elements.activeBox.previousElementSibling;
+          this.selectPrevBox();
         }
         if (button.className === "right") {
-          box = this.elements.activeBox.nextElementSibling;
+          this.selectNextBox();
         }
-        this.handleBoxSelection(box);
+        this.cancelAutoSelectBox();
       });
     });
-  }
-
-  resetDataBoxes() {
-    Array.from(this.elements.boxes).forEach((elem, index) => {
-      elem.setAttribute("data-box", index);
-    });
-  }
-
-  resetActiveBoxes() {
-    forEach(this.elements.boxes, (elem) => {
-      elem.classList.remove("active", "active-hover", "hover");
-    });
-  }
-
-  create(hasReset = true) {
-    super.create();
-    if (hasReset) this.resetDataBoxes();
   }
 
   slideBoxWrapper(side) {
@@ -125,7 +109,7 @@ export class Home extends Component {
         this.elements.boxInnerWrapper.firstElementChild
       );
       this.appendChild(this.elements.boxInnerWrapper, firstBox);
-      this.slideBoxWrapper('left')
+      this.slideBoxWrapper("left");
       this.create();
       return;
     }
@@ -150,11 +134,48 @@ export class Home extends Component {
         lastBox,
         this.elements.boxInnerWrapper.firstElementChild
       );
-      this.slideBoxWrapper('right')
+      this.slideBoxWrapper("right");
       this.create();
       return;
     }
 
     this.create(false);
+  }
+
+  autoSelectBox() {
+    this.interval = setInterval(() => {
+      this.selectNextBox();
+    }, 3000);
+  }
+
+  cancelAutoSelectBox() {
+    clearInterval(this.interval);
+  }
+
+  selectNextBox() {
+    const box = this.elements.activeBox.nextElementSibling;
+    this.handleBoxSelection(box);
+  }
+
+  selectPrevBox() {
+    const box = this.elements.activeBox.previousElementSibling;
+    this.handleBoxSelection(box);
+  }
+
+  resetDataBoxes() {
+    Array.from(this.elements.boxes).forEach((elem, index) => {
+      elem.setAttribute("data-box", index);
+    });
+  }
+
+  resetActiveBoxes() {
+    forEach(this.elements.boxes, (elem) => {
+      elem.classList.remove("active", "active-hover", "hover");
+    });
+  }
+
+  create(hasReset = true) {
+    super.create();
+    if (hasReset) this.resetDataBoxes();
   }
 }

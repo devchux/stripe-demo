@@ -64,4 +64,11 @@ export class Component {
   removeChild(parent, child) {
     return parent.removeChild(child);
   }
+
+  swapElements(element, element2) {
+    const element2_copy = element2.cloneNode(true);
+    element.parentNode.insertBefore(element2_copy, element);
+    element2.parentNode.insertBefore(element, element2);
+    element2.parentNode.replaceChild(element2, element2_copy);
+}
 }
