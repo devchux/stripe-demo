@@ -63,18 +63,11 @@ export class Home extends Component {
     forEach(this.elements.navButton, (button) => {
       button.addEventListener("click", () => {
         let box = null;
-        let index = this.getBoxIndex(this.elements.activeBox);
         if (button.className === "left") {
-          index = index === 0 ? this.elements.boxes.length : index;
-          box = Array.from(this.elements.boxes).find(
-            (elem) => this.getBoxIndex(elem) === index - 1
-          );
+          box = this.elements.activeBox.previousElementSibling
         }
         if (button.className === "right") {
-          index = index === this.elements.boxes.length ? -1 : index;
-          box = Array.from(this.elements.boxes).find(
-            (elem) => this.getBoxIndex(elem) === index + 1
-          );
+          box = this.elements.activeBox.nextElementSibling
         }
         this.handleBoxSelection(box);
       });
