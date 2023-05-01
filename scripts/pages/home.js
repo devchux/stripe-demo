@@ -82,9 +82,7 @@ export class Home extends Component {
 
   resetActiveBoxes() {
     forEach(this.elements.boxes, (elem) => {
-      elem.classList.remove("active");
-      elem.classList.remove("active-hover");
-      elem.classList.remove("hover");
+      elem.classList.remove("active", "active-hover", "hover");
     });
   }
 
