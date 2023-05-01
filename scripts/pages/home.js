@@ -64,10 +64,10 @@ export class Home extends Component {
       button.addEventListener("click", () => {
         let box = null;
         if (button.className === "left") {
-          box = this.elements.activeBox.previousElementSibling
+          box = this.elements.activeBox.previousElementSibling;
         }
         if (button.className === "right") {
-          box = this.elements.activeBox.nextElementSibling
+          box = this.elements.activeBox.nextElementSibling;
         }
         this.handleBoxSelection(box);
       });
@@ -89,6 +89,16 @@ export class Home extends Component {
   create(hasReset = true) {
     super.create();
     if (hasReset) this.resetDataBoxes();
+  }
+
+  slideBoxWrapper(side) {
+    this.addClass(this.elements.boxInnerWrapper, `${side}-slide-in`);
+
+    const timer = setTimeout(() => {
+      this.removeClass(this.elements.boxInnerWrapper, `${side}-slide-in`);
+
+      clearTimeout(timer);
+    }, 350);
   }
 
   handleBoxSelection(box) {
@@ -115,6 +125,7 @@ export class Home extends Component {
         this.elements.boxInnerWrapper.firstElementChild
       );
       this.appendChild(this.elements.boxInnerWrapper, firstBox);
+      this.slideBoxWrapper('left')
       this.create();
       return;
     }
@@ -139,6 +150,7 @@ export class Home extends Component {
         lastBox,
         this.elements.boxInnerWrapper.firstElementChild
       );
+      this.slideBoxWrapper('right')
       this.create();
       return;
     }

@@ -37,14 +37,35 @@ html {
         overflow: hidden;
         margin-top: 5vh;
         height: 100%;
+        // border: 2px solid red;
 
         > .box-inner-wrapper {
           display: flex;
           gap: 2rem;
           height: 100%;
-          width: 120%;
-          transform: translateX(-8.5%);
+          width: 103.5%;
+          transform: translateX(-1.7%);
           transition: all 0.35s linear;
+
+          &.right-slide-in {
+            animation: right-slide-in 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+            @keyframes right-slide-in {
+              0% {
+                transform: translateX(-5rem);
+              }
+            }
+          }
+
+          &.left-slide-in {
+            animation: left-slide-in 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+            @keyframes left-slide-in {
+              0% {
+                transform: translateX(1rem);
+              }
+            }
+          }
 
           > .box {
             border-radius: 2rem;
@@ -55,7 +76,7 @@ html {
             );
             height: 99%;
             cursor: pointer;
-            width: 10%;
+            width: 1%;
             transition: all 0.35s linear;
             position: relative;
 
@@ -70,11 +91,11 @@ html {
             }
 
             &.in-view {
-              width: 15%;
+              width: 10%;
               transition: all 0.35s linear;
 
               &.hover {
-                width: 19.5%;
+                width: 12.5%;
                 transition: all 0.35s linear;
               }
 
