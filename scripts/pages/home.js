@@ -12,9 +12,6 @@ export class Home extends Component {
         boxesInView: "main > .box-wrapper > .box-inner-wrapper > .box.in-view",
       },
     });
-
-    this.rightMoves = 0;
-    this.translateX = 8.5;
   }
 
   onLoad() {
@@ -33,8 +30,8 @@ export class Home extends Component {
         )
           return;
 
-        this.elements.activeBox.classList.add("active-hover");
-        box.classList.add("hover");
+        this.addClass(this.elements.activeBox, "active-hover");
+        this.addClass(box, "hover");
       });
     });
   }
@@ -48,8 +45,8 @@ export class Home extends Component {
         )
           return;
 
-        this.elements.activeBox.classList.remove("active-hover");
-        box.classList.remove("hover");
+        this.removeClass(this.elements.activeBox, "active-hover");
+        this.removeClass(box, "hover");
       });
     });
   }
@@ -66,18 +63,18 @@ export class Home extends Component {
     forEach(this.elements.navButton, (button) => {
       button.addEventListener("click", () => {
         let box = null;
-        let index = Number(this.elements.activeBox.getAttribute("data-box"));
+        let index = this.getBoxIndex(this.elements.activeBox);
         if (button.className === "left") {
           index = index === 0 ? this.elements.boxes.length : index;
           box = Array.from(this.elements.boxes).find(
-            (elem) => Number(elem.getAttribute("data-box")) === index - 1
+            (elem) => this.getBoxIndex(elem) === index - 1
           );
         }
         if (button.className === "right") {
-            index = index === this.elements.boxes.length ? -1 : index;
-            box = Array.from(this.elements.boxes).find(
-              (elem) => Number(elem.getAttribute("data-box")) === index + 1
-            );
+          index = index === this.elements.boxes.length ? -1 : index;
+          box = Array.from(this.elements.boxes).find(
+            (elem) => this.getBoxIndex(elem) === index + 1
+          );
         }
         this.handleBoxSelection(box);
       });
@@ -108,44 +105,43 @@ export class Home extends Component {
       return;
 
     this.resetActiveBoxes();
-    box.classList.add("active");
+    this.addClass(box, "active");
 
     if (
-      this.elements.boxesInView[
-        this.elements.boxesInView.length - 1
-      ].getAttribute("data-box") === box.getAttribute("data-box") &&
-      box.getAttribute("data-box") !==
-        this.elements.boxes[this.elements.boxes.length - 1].getAttribute(
-          "data-box"
-        )
+      this.getBoxIndex(this.getLastElement(this.elements.boxesInView)) ===
+        this.getBoxIndex(box) &&
+      this.getBoxIndex(box) !==
+        this.getBoxIndex(this.getLastElement(this.elements.boxes))
     ) {
-      this.elements.boxesInView[0].classList.remove("in-view");
-      this.elements.boxes[
-        Number(box.getAttribute("data-box")) + 1
-      ].classList.add("in-view");
-      const firstBox = this.elements.boxes[0];
-      this.elements.boxInnerWrapper.removeChild(
+      this.removeClass(
+        this.getFirstElement(this.elements.boxesInView),
+        "in-view"
+      );
+      this.addClass(this.elements.boxes[this.getBoxIndex(box) + 1], "in-view");
+      const firstBox = this.getFirstElement(this.elements.boxes);
+      this.removeChild(
+        this.elements.boxInnerWrapper,
         this.elements.boxInnerWrapper.firstElementChild
       );
-      this.elements.boxInnerWrapper.appendChild(firstBox);
+      this.appendChild(this.elements.boxInnerWrapper, firstBox);
       this.create();
       return;
     }
 
     if (
-      this.elements.boxesInView[0].getAttribute("data-box") ===
-        box.getAttribute("data-box") &&
-      box.getAttribute("data-box") !==
-        this.elements.boxes[0].getAttribute("data-box")
+      this.getBoxIndex(this.getFirstElement(this.elements.boxesInView)) ===
+        this.getBoxIndex(box) &&
+      this.getBoxIndex(box) !==
+        this.getBoxIndex(this.getFirstElement(this.elements.boxes))
     ) {
-      this.elements.boxesInView[
-        this.elements.boxesInView.length - 1
-      ].classList.remove("in-view");
-      this.elements.boxes[
-        Number(box.getAttribute("data-box")) - 1
-      ].classList.add("in-view");
-      const lastBox = this.elements.boxes[this.elements.boxes.length - 1];
-      this.elements.boxInnerWrapper.removeChild(
+      this.removeClass(
+        this.getLastElement(this.elements.boxesInView),
+        "in-view"
+      );
+      this.addClass(this.elements.boxes[this.getBoxIndex(box) - 1], "in-view");
+      const lastBox = this.getLastElement(this.elements.boxes);
+      this.removeChild(
+        this.elements.boxInnerWrapper,
         this.elements.boxInnerWrapper.lastElementChild
       );
       this.elements.boxInnerWrapper.insertBefore(
@@ -157,5 +153,33 @@ export class Home extends Component {
     }
 
     this.create(false);
+  }
+
+  getFirstElement(elements) {
+    return elements[0];
+  }
+
+  getLastElement(elements) {
+    return elements[elements.length - 1];
+  }
+
+  getBoxIndex(element) {
+    return Number(element.getAttribute("data-box"));
+  }
+
+  addClass(element, name) {
+    return element.classList.add(name);
+  }
+
+  removeClass(element, name) {
+    return element.classList.remove(name);
+  }
+
+  appendChild(parent, child) {
+    return parent.appendChild(child);
+  }
+
+  removeChild(parent, child) {
+    return parent.removeChild(child);
   }
 }
