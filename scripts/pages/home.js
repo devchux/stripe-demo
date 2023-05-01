@@ -14,7 +14,7 @@ export class Home extends Component {
     });
 
     this.rightMoves = 0;
-    this.distanceMoved = 7;
+    this.translateX = 8.5;
   }
 
   onLoad() {
@@ -62,12 +62,7 @@ export class Home extends Component {
         )
           return;
 
-        forEach(this.elements.boxes, (elem) => {
-          elem.classList.remove("active");
-          elem.classList.remove("active-hover");
-          elem.classList.remove("hover");
-        });
-
+        this.resetActiveBoxes();
         box.classList.add("active");
 
         if (
@@ -79,20 +74,64 @@ export class Home extends Component {
               "data-box"
             )
         ) {
-          this.rightMoves++;
-          const translateX =
-            this.rightMoves * this.distanceMoved -
-            (this.rightMoves === this.elements.boxes.length / 2 ? 2.5 : 0);
-          console.log(translateX);
-          this.elements.boxInnerWrapper.style.transform = `translateX(-${translateX}%)`;
           this.elements.boxesInView[0].classList.remove("in-view");
           this.elements.boxes[
             Number(box.getAttribute("data-box")) + 1
           ].classList.add("in-view");
+          const firstBox = this.elements.boxes[0];
+          this.elements.boxInnerWrapper.removeChild(
+            this.elements.boxInnerWrapper.firstElementChild
+          );
+          this.elements.boxInnerWrapper.appendChild(firstBox);
+          this.create();
+          return;
         }
 
-        super.create();
+        if (
+          this.elements.boxesInView[0].getAttribute("data-box") ===
+            box.getAttribute("data-box") &&
+          box.getAttribute("data-box") !==
+            this.elements.boxes[0].getAttribute("data-box")
+        ) {
+          this.elements.boxesInView[
+            this.elements.boxesInView.length - 1
+          ].classList.remove("in-view");
+          this.elements.boxes[
+            Number(box.getAttribute("data-box")) - 1
+          ].classList.add("in-view");
+          const lastBox = this.elements.boxes[this.elements.boxes.length - 1];
+          this.elements.boxInnerWrapper.removeChild(
+            this.elements.boxInnerWrapper.lastElementChild
+          );
+          this.elements.boxInnerWrapper.insertBefore(
+            lastBox,
+            this.elements.boxInnerWrapper.firstElementChild
+          );
+          this.create();
+          return;
+        }
+
+        this.create(false);
       });
     });
+  }
+
+  resetDataBoxes() {
+    Array.from(this.elements.boxes).forEach((elem, index) => {
+      elem.setAttribute("data-box", index);
+    });
+  }
+
+  resetActiveBoxes() {
+    forEach(this.elements.boxes, (elem) => {
+      elem.classList.remove("active");
+      elem.classList.remove("active-hover");
+      elem.classList.remove("hover");
+    });
+  }
+
+  create(hasReset = true) {
+    super.create()
+    if (hasReset) this.resetDataBoxes();
   }
 }

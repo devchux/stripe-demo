@@ -3,7 +3,7 @@ html {
 
   body {
     main {
-      max-width: 124rem;
+      max-width: 144rem;
       padding: 3rem;
       margin: auto;
       height: 80vh;
@@ -30,10 +30,11 @@ html {
 
         > .box-inner-wrapper {
           display: flex;
-          gap: 3rem;
+          gap: 2rem;
           height: 100%;
-          width: 148%;
-          transition: all 0.5s linear;
+          width: 120%;
+          transform: translateX(-8.5%);
+          transition: all 0.35s linear;
 
           > .box {
             border-radius: 2rem;
@@ -41,19 +42,32 @@ html {
             height: 99%;
             border: 0.1rem solid #000000;
             cursor: pointer;
-            width: 15%;
-            transition: all 0.2s linear;
+            width: 10%;
+            transition: all 0.35s linear;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #ffffff;
 
-            &.active {
-              width: 100%;
-            }
+            &.in-view {
+              width: 15%;
+              transition: all 0.35s linear;
 
-            &.hover {
-              width: 19.5%;
-            }
+              &.hover {
+                width: 19.5%;
+                transition: all 0.35s linear;
+              }
 
-            &.active-hover {
-              width: 95.5%;
+              &.active {
+                width: 100%;
+                transition: all 0.35s linear;
+
+                &.active-hover {
+                  width: 95.5%;
+                  transition: all 0.35s linear;
+                }
+              }
             }
           }
         }
