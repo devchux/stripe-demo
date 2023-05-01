@@ -1,5 +1,11 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
 html {
   font-size: calc(100vw * 10 / 1920);
+  font-family: Arial, Helvetica, sans-serif;
 
   body {
     main {
@@ -15,11 +21,15 @@ html {
 
         > button {
           cursor: pointer;
-          background-color: hsl(233.747, 100%, 64%);
-          border: 0.1rem solid #000000;
+          background: linear-gradient(
+            50.97deg,
+            hsl(233.747, 100%, 64%) -19.81%,
+            hsl(220.833, 95%, 67%) 57.52%
+          );
           border-radius: 0.5rem;
           color: #ffffff;
           transform: scale(1.2);
+          border: none;
         }
       }
 
@@ -38,17 +48,26 @@ html {
 
           > .box {
             border-radius: 2rem;
-            background-color: hsl(233.747, 100%, 64%);
+            background: linear-gradient(
+              50.97deg,
+              hsl(233.747, 100%, 64%) -19.81%,
+              hsl(220.833, 95%, 67%) 57.52%
+            );
             height: 99%;
-            border: 0.1rem solid #000000;
             cursor: pointer;
             width: 10%;
             transition: all 0.35s linear;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: #ffffff;
+            position: relative;
+
+            > p {
+              font-size: 4rem;
+              color: #ffffff;
+              position: absolute;
+              top: 2rem;
+              left: 2rem;
+              opacity: 0;
+              transition: all 0.2s linear;
+            }
 
             &.in-view {
               width: 15%;
@@ -62,6 +81,11 @@ html {
               &.active {
                 width: 100%;
                 transition: all 0.35s linear;
+
+                > p {
+                  opacity: 1;
+                  transition: all 0.5s linear;
+                }
 
                 &.active-hover {
                   width: 95.5%;
