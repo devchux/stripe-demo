@@ -154,32 +154,4 @@ export class Home extends Component {
 
     this.create(false);
   }
-
-  getFirstElement(elements) {
-    return elements[0];
-  }
-
-  getLastElement(elements) {
-    return elements[elements.length - 1];
-  }
-
-  getBoxIndex(element) {
-    return Number(element.getAttribute("data-box"));
-  }
-
-  addClass(element, name) {
-    return element.classList.add(name);
-  }
-
-  removeClass(element, name) {
-    return element.classList.remove(name);
-  }
-
-  appendChild(parent, child) {
-    return parent.appendChild(child);
-  }
-
-  removeChild(parent, child) {
-    return parent.removeChild(child);
-  }
 }
